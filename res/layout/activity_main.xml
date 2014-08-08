@@ -27,6 +27,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="提交" />
+        <ProgressBar
+            android:id="@+id/initDB"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            />
     </LinearLayout>
 
 </RelativeLayout>
