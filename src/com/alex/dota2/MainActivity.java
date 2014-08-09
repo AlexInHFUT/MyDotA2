@@ -1,5 +1,6 @@
 package com.alex.dota2;
 
+
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,6 +18,8 @@ import com.alex.data.DotADB;
 public class MainActivity extends ActionBarActivity {
 
 	private int status = 0;
+
+
 	private ProgressBar bar;
 	private DotADB db;
 	private Button initBt;
@@ -25,10 +28,13 @@ public class MainActivity extends ActionBarActivity {
 	private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what == 911) {
+				status = ((Integer)msg.obj).intValue();	
 				bar.setProgress(status);
 			}
 		}
 	};
+
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,16 +44,14 @@ public class MainActivity extends ActionBarActivity {
 		bar = (ProgressBar) findViewById(R.id.initDB);
 		initBt = (Button) findViewById(R.id.commitBt);
 		accountText = (EditText) findViewById(R.id.userId);
-
-		db = new DotADB(this, "dota", 1, this);
+		db = new DotADB(this, "dota", 1,this);
 
 		initBt.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				db.setAccount_id(accountText.getText().toString());
-				
+				new Thread(db).start();
 			}
 		});
-
 	}
 
 	@Override
@@ -67,6 +71,22 @@ public class MainActivity extends ActionBarActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	
+	public Handler getHandler() {
+		return handler;
+	}
+
+	public void setHandler(Handler handler) {
+		this.handler = handler;
 	}
 
 }
