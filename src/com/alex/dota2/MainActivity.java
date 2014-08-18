@@ -1,7 +1,9 @@
 package com.alex.dota2;
 
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,6 +15,7 @@ import android.widget.ProgressBar;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import com.alex.listener.*;
 import com.alex.data.DotADB;
 
 public class MainActivity extends ActionBarActivity {
@@ -24,6 +27,9 @@ public class MainActivity extends ActionBarActivity {
 	private DotADB db;
 	private Button initBt;
 	private EditText accountText;
+	private ActionBar actionBar;
+	private int mod;
+	private MainTabListener mainTabListener;
 
 	private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -44,6 +50,14 @@ public class MainActivity extends ActionBarActivity {
 		bar = (ProgressBar) findViewById(R.id.initDB);
 		initBt = (Button) findViewById(R.id.commitBt);
 		accountText = (EditText) findViewById(R.id.userId);
+		actionBar = getSupportActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		mainTabListener = new MainTabListener();
+		actionBar.addTab(actionBar.newTab().setText("英雄").setTabListener(mainTabListener));
+		actionBar.addTab(actionBar.newTab().setText("比赛").setTabListener(mainTabListener));
+		actionBar.addTab(actionBar.newTab().setText("记录").setTabListener(mainTabListener));
+		actionBar.addTab(actionBar.newTab().setText("资料").setTabListener(mainTabListener));
+ 
 		db = new DotADB(this, "dota", 1,this);
 
 		initBt.setOnClickListener(new OnClickListener() {
@@ -58,6 +72,7 @@ public class MainActivity extends ActionBarActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
+		
 		return true;
 	}
 
@@ -70,6 +85,7 @@ public class MainActivity extends ActionBarActivity {
 		if (id == R.id.action_settings) {
 			return true;
 		}
+
 		return super.onOptionsItemSelected(item);
 	}
 	
